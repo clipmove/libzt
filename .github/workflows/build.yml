@@ -10,9 +10,15 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: diasurgical/devilutionX
+        path: devilutionX
+        fetch-depth: 0
+
     - name: Create Build Environment
+      shell: bash
       run: |
-        git clone https://github.com/diasurgical/devilutionX --recursive
         cd devilutionX
         sudo apt-get update
         sudo apt-get install -y cmake gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 pkg-config-mingw-w64-x86-64 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq
