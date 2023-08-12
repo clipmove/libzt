@@ -1,19 +1,10 @@
-name: Windows MinGW x64
+name: Build
 
 on:
   push:
-    branches:
-      - master
-    paths-ignore:
-      - '*.md'
-  pull_request:
-    types: [ opened, synchronize ]
-    paths-ignore:
-      - '*.md'
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [master]
+  pull_request: {}
+  merge_group: {}
 
 jobs:
   build:
