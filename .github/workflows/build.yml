@@ -32,5 +32,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: libzt-win64
-        path: ./upload
+        path: ./devilutionX/upload
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
