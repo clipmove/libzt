@@ -1,4 +1,4 @@
-name: Build libzt
+name: Build
 
 on:
   push:
