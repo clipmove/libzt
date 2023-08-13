@@ -24,7 +24,7 @@ jobs:
         sudo apt-get install -y cmake gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 pkg-config-mingw-w64-x86-64 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq
         sudo rm /usr/x86_64-w64-mingw32/lib/libz.dll.a
         sudo Packaging/windows/mingw-prep64.sh
-        cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_TESTING=OFF -DCPACK=ON -DCMAKE_TOOLCHAIN_FILE=../CMake/platforms/mingwcc64.toolchain.cmake -DDEVILUTIONX_SYSTEM_BZIP2=OFF -DDEVILUTIONX_STATIC_LIBSODIUM=ON -DDISCORD_INTEGRATION=OFF -DDISABLE_LTO=ON
+        cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TESTING=OFF -DCPACK=ON -DCMAKE_TOOLCHAIN_FILE=../CMake/platforms/mingwcc64.toolchain.cmake -DDEVILUTIONX_SYSTEM_BZIP2=OFF -DDEVILUTIONX_STATIC_LIBSODIUM=ON -DDISCORD_INTEGRATION=OFF -DDISABLE_LTO=ON
         cmake --build build -j $(nproc) --target package
         mkdir -p ./upload
         cp -a ./build/_deps/libzt-build/lib ./upload/
