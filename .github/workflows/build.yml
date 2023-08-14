@@ -37,7 +37,7 @@ jobs:
       shell: bash
       run: |
         cd devilutionX
-        ${{matrix.build-prep}}
+        ${{matrix.prep-cmd}}
         ${{matrix.build-cmd}}
         cmake --build build -j $(nproc) --target package
         mkdir -p ./upload
