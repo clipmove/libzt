@@ -13,15 +13,15 @@ jobs:
       matrix:
         include:
           - name: Linux x86_64 MinGW
-            prep-cmd: sudo apt-get update && sudo apt-get install -y cmake gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 pkg-config-mingw-w64-x86-64 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq && sudo rm /usr/x86_64-w64-mingw32/lib/libz.dll.a && sudo Packaging/windows/mingw-prep64.sh
+            prep-cmd: sudo apt-get install -y cmake gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64 pkg-config-mingw-w64-x86-64 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq && sudo rm /usr/x86_64-w64-mingw32/lib/libz.dll.a && sudo Packaging/windows/mingw-prep64.sh
             build-cmd: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TESTING=OFF -DCPACK=ON -DCMAKE_TOOLCHAIN_FILE=../CMake/platforms/mingwcc64.toolchain.cmake -DDEVILUTIONX_SYSTEM_BZIP2=OFF -DDEVILUTIONX_STATIC_LIBSODIUM=ON -DDISCORD_INTEGRATION=OFF -DDISABLE_LTO=ON
             publish-as: win64
           - name: Linux i686 MinGW
-            prep-cmd: sudo apt-get update && sudo apt install -y cmake gcc-mingw-w64-i686 g++-mingw-w64-i686 pkg-config-mingw-w64-i686 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq && sudo rm /usr/i686-w64-mingw32/lib/libz.dll.a && sudo Packaging/windows/mingw-prep.sh
+            prep-cmd: sudo apt install -y cmake gcc-mingw-w64-i686 g++-mingw-w64-i686 pkg-config-mingw-w64-i686 libz-mingw-w64-dev gettext dpkg-dev wget git sudo smpq && sudo rm /usr/i686-w64-mingw32/lib/libz.dll.a && sudo Packaging/windows/mingw-prep.sh
             build-cmd: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_TESTING=OFF -DCPACK=ON -DCMAKE_TOOLCHAIN_FILE=../CMake/platforms/mingwcc.toolchain.cmake -DDEVILUTIONX_SYSTEM_BZIP2=OFF -DDEVILUTIONX_STATIC_LIBSODIUM=ON -DDISCORD_INTEGRATION=OFF -DDISABLE_LTO=ON
             publish-as: win32
           - name: Linux x86_64 GCC
-            prep-cmd: sudo apt-get update
+            prep-cmd: Packaging/nix/debian-host-prep.sh
             build-cmd: cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=MinSizeRel -DCMAKE_INSTALL_PREFIX=/usr -DCPACK=ON -DDISCORD_INTEGRATION=OFF -DBUILD_TESTING=OFF -DDEVILUTIONX_SYSTEM_LIBFMT=OFF -DDEVILUTIONX_SYSTEM_SIMPLEINI=OFF -DDISABLE_LTO=ON
             publish-as: linux
     name: ${{matrix.name}}
@@ -36,6 +36,7 @@ jobs:
     - name: Create Build Environment
       shell: bash
       run: |
+        sudo apt-get update
         ${{matrix.prep-cmd}}
         ${{matrix.build-cmd}}
         cmake --build build -j $(nproc) --target package
@@ -45,5 +46,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: libzt-${{matrix.publish-as}}
-        path: ./devilutionX/upload
+        path: ./upload
         if-no-files-found: error # 'warn' or 'ignore' are also available, defaults to `warn`
