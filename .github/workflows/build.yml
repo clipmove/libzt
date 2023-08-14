@@ -30,13 +30,12 @@ jobs:
     - uses: actions/checkout@v3
       with:
         repository: diasurgical/devilutionX
-        path: devilutionX
+        path: ./
         fetch-depth: 0
 
     - name: Create Build Environment
       shell: bash
       run: |
-        cd devilutionX
         ${{matrix.prep-cmd}}
         ${{matrix.build-cmd}}
         cmake --build build -j $(nproc) --target package
